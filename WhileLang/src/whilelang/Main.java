@@ -18,9 +18,19 @@
 
 package whilelang;
 
+import jasm.io.ClassFileWriter;
+
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintStream;
+
+// import jx86.io.AsmFileWriter;
+// import jx86.lang.X86File;
+
+
+
 
 import whilelang.io.*;
 import whilelang.lang.WhileFile;
@@ -44,6 +54,7 @@ public class Main {
 		boolean verbose = false;
 		int fileArgsBegin = 0;
 		Mode mode = Mode.interpret;
+		// jx86.lang.Target target = jx86.lang.Target.MACOS_X86_64; // default
 		
 		for (int i = 0; i != args.length; ++i) {
 			if (args[i].startsWith("-")) {
@@ -84,7 +95,7 @@ public class Main {
 			
 			// Second, we'd want to perform some kind of type checking here.			
 			// new DefiniteAssignment().check(ast);
-			// new TypeChecker().check(ast);
+			new TypeChecker().check(ast);
 			
 			// Third, we'd want to run the interpreter or compile the file.
 			switch(mode) {
@@ -92,17 +103,13 @@ public class Main {
 				new Interpreter().run(ast);
 				break;
 			case jvm:
-				File classFile = new File(filename.substring(0,filename.lastIndexOf('.')) + ".class");
-				System.out.println("Compiling to JVM Bytecode...");
-				System.out.println("NOT SUPPORTED (YET)");
-				System.exit(1);
-				// ClassFileWriter cfw = new ClassFileWriter(classFile);
-				// cfw.write(ast);				
+//				FileOutputStream classFile = new FileOutputStream(filename.substring(0,filename.lastIndexOf('.')) + ".class");
+//				System.out.println("Compiling to JVM Bytecode...");
+//				ClassFileWriter cfw = new ClassFileWriter(classFile);
+//				cfw.write(ast);				
 				break;
 			case x86:
 				System.out.println("Compiling to X86 Assembly Language...");
-				System.out.println("NOT SUPPORTED (YET)");
-				System.exit(1);
 				// First, determine output filename
 				// File asFile = new File(filename.substring(0,filename.lastIndexOf('.')) + ".s");
 				// Second, build the x86 file

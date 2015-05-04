@@ -7,6 +7,15 @@ typedef int64_t slot_t;
 
 #define SLOT_SIZE 8
 
+#define VOID_TAG 0
+#define BOOL_TAG 1
+#define CHAR_TAG 2
+#define INT_TAG 3
+#define REAL_TAG 4
+#define STRING_TAG 5
+#define RECORD_TAG 6
+#define LIST_TAG 7
+
 /**
  * Runtime support for While on X86.  Implemented in C for simplicity.
  */
@@ -15,17 +24,17 @@ int widthof(slot_t *type) {
  slot_t tag = *type;
 
   switch(tag) {
-  case 0:
+  case VOID_TAG:
     // void
     break;
-  case 1:
-  case 2: 
-  case 3: 
-  case 4: 
-  case 5: 
+  case BOOL_TAG:
+  case CHAR_TAG: 
+  case INT_TAG: 
+  case REAL_TAG: 
+  case STRING_TAG: 
     // bool
     return SLOT_SIZE;    
-  case 6: 
+  case LIST_TAG: 
     {
       int i;
       int width = 0;
@@ -49,10 +58,10 @@ void internal_tostring(slot_t *item, slot_t *type, char* buf) {
   slot_t tag = *type;
 
   switch(tag) {
-  case 0:
+  case VOID_TAG:
     // void
     break;
-  case 1:
+  case BOOL_TAG:
     // bool
     if(*item == 0) {
       sprintf(buf,"false");
@@ -60,7 +69,7 @@ void internal_tostring(slot_t *item, slot_t *type, char* buf) {
       sprintf(buf,"true");
     }
     break;
-  case 2: 
+  case CHAR_TAG: 
     {
       // char
       char tmp[2];
@@ -69,19 +78,19 @@ void internal_tostring(slot_t *item, slot_t *type, char* buf) {
       sprintf(buf,"%s",tmp);
       break;
     }
-  case 3:
+  case INT_TAG:
     // int
     sprintf(buf,"%d",*item);
     break;
-  case 4:
+  case REAL_TAG:
     // real
     sprintf(buf,"%g",*item);
     break;
-  case 5:
+  case STRING_TAG:
     // string
     sprintf(buf,"%s",item);
     break;
-  case 6: 
+  case RECORD_TAG: 
     {
       int i;
       // record
@@ -114,10 +123,10 @@ void internal_print(slot_t *item, slot_t *type) {
   slot_t tag = *type;
 
   switch(tag) {
-  case 0:
+  case VOID_TAG:
     // void
     break;
-  case 1:
+  case BOOL_TAG:
     // bool
     if(*item == 0) {
       printf("false");
@@ -125,7 +134,7 @@ void internal_print(slot_t *item, slot_t *type) {
       printf("true");
     }
     break;
-  case 2: 
+  case CHAR_TAG: 
     {
       // char
       char tmp[2];
@@ -134,19 +143,19 @@ void internal_print(slot_t *item, slot_t *type) {
       printf("%s",tmp);
       break;
     }
-  case 3:
+  case INT_TAG:
     // int
     printf("%d",*item);
     break;
-  case 4:
+  case REAL_TAG:
     // real
     printf("%g",*item);
     break;
-  case 5:
+  case STRING_TAG:
     // string
     printf("%s",item);
     break;
-  case 6: 
+  case RECORD_TAG: 
     {
       int i;
       // record
