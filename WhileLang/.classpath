@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="/Users/samminns/Downloads/jasm-v0.1.7.jar" sourcepath="/Users/samminns/Downloads/Jasm-master.zip"/>
+	<classpathentry kind="lib" path="/Users/samminns/git/SWEN430_A3/WhileLang/lib/jasm-v0.1.7.jar" sourcepath="/Users/samminns/Downloads/Jasm-master.zip"/>
 	<classpathentry kind="output" path="src"/>
 </classpath>

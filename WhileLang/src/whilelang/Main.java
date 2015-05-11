@@ -18,19 +18,12 @@
 
 package whilelang;
 
-import jasm.io.ClassFileWriter;
-
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
 
 // import jx86.io.AsmFileWriter;
 // import jx86.lang.X86File;
-
-
-
 
 import whilelang.io.*;
 import whilelang.lang.WhileFile;
@@ -103,10 +96,10 @@ public class Main {
 				new Interpreter().run(ast);
 				break;
 			case jvm:
-//				FileOutputStream classFile = new FileOutputStream(filename.substring(0,filename.lastIndexOf('.')) + ".class");
-//				System.out.println("Compiling to JVM Bytecode...");
-//				ClassFileWriter cfw = new ClassFileWriter(classFile);
-//				cfw.write(ast);				
+				File classFile = new File(filename.substring(0,filename.lastIndexOf('.')) + ".class");
+				System.out.println("Compiling to JVM Bytecode...");
+				ClassFileWriter cfw = new ClassFileWriter(classFile);
+				cfw.write(ast);				
 				break;
 			case x86:
 				System.out.println("Compiling to X86 Assembly Language...");
