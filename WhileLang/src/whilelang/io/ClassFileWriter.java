@@ -26,8 +26,8 @@ import whilelang.lang.WhileFile.FunDecl;
 public class ClassFileWriter {
 	
 	 jasm.io.ClassFileWriter writer;
-	public static JvmType.Clazz JAVA_LANG_SYSTEM = new JvmType.Clazz("java.lang", "System");
-	public static JvmType.Clazz JAVA_IO_PRINTSTREAM = new JvmType.Clazz("java.io", "PrintStream");
+	public	static JvmType.Clazz JAVA_LANG_SYSTEM = new JvmType.Clazz("java.lang", "System");
+	public 	static JvmType.Clazz JAVA_IO_PRINTSTREAM = new JvmType.Clazz("java.io", "PrintStream");
 	private static ArrayList<Modifier> modifiers = new ArrayList<Modifier>();
 	private static ArrayList<Bytecode> bytecodes = new ArrayList<Bytecode>();
 	private static int slot = 0;
@@ -37,8 +37,9 @@ public class ClassFileWriter {
 	
 	public void write(WhileFile sourceFile) throws IOException {
 		String className = sourceFile.filename.substring(0,sourceFile.filename.indexOf('.') );
-		System.out.println(className);
-		 jasm.lang.ClassFile cf = new ClassFile(
+		modifiers.add(Modifier.ACC_PUBLIC);
+		
+		jasm.lang.ClassFile cf = new ClassFile(
 					49,                                 // Java 1.5 or later
 					new JvmType.Clazz("",className), // class is HelloWorld
 					JvmTypes.JAVA_LANG_OBJECT,          // superclass is Object
@@ -73,8 +74,10 @@ public class ClassFileWriter {
 				modifiers); // which is static public
 		for (Stmt stmt : fd.statements) {
 			processStatement(stmt);
-			System.out.println();
-		}				                                    
+		}
+		
+		bytecodes.add(new Bytecode.Return(null));
+		
 		method.attributes().add(new Code(bytecodes, Collections.EMPTY_LIST, method));		
 		cf.methods().add(method);
 	}
@@ -103,13 +106,17 @@ public class ClassFileWriter {
 		else if(stmt instanceof Stmt.While){
 			processStatement((Stmt.While) stmt);
 		}
+		else if(stmt instanceof Stmt.VariableDeclaration){
+			processStatement((Stmt.VariableDeclaration) stmt);
+		}
 	}
+	
 	private void processStatement(Stmt.Print stmt){
 		bytecodes.add(new Bytecode.GetField(JAVA_LANG_SYSTEM, "out",
 						JAVA_IO_PRINTSTREAM,
 						Bytecode.FieldMode.STATIC));
 		
-		bytecodes.add(new Bytecode.LoadConst("Hello World"));
+		bytecodes.add(new Bytecode.LoadConst("sausage"));
 		
 		bytecodes.add(new Bytecode.Invoke(JAVA_IO_PRINTSTREAM, "println",
 						new JvmType.Function(JvmTypes.T_VOID,
@@ -118,7 +125,8 @@ public class ClassFileWriter {
 		
 		incrementSlot();
 	}
-	private void processStatement(Stmt.Assign stmt){
+	private void processStatement(Stmt.Assign stmt){ 
+		bytecodes.add(new Bytecode.Load(slot, null));
 		incrementSlot();
 	}
 	private void processStatement(Stmt.For stmt){

@@ -1,3 +1,10 @@
 /SyntaxError.class
 /TypeChecker.class
 /Pair.class
+/Attribute$Source.class
+/Attribute$Type.class
+/Attribute.class
+/DefiniteAssignment.class
+/SyntacticElement$Impl.class
+/SyntacticElement.class
+/SyntaxError$InternalFailure.class

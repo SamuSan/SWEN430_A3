@@ -9,6 +9,7 @@ public class ClassFileValidTests extends TestHarness {
   super("tests/valid","tests/valid","sysout");
  }
 
+ @Test public void baseline_print() { runClassFileTest("baseline_print"); }
  @Test public void BoolAssign_Valid_1() { runClassFileTest("BoolAssign_Valid_1"); }
 // @Test public void BoolAssign_Valid_2() { runClassFileTest("BoolAssign_Valid_2"); }
 // @Test public void BoolAssign_Valid_3() { runClassFileTest("BoolAssign_Valid_3"); } 
