@@ -11,6 +11,8 @@ import jasm.lang.Modifier;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.TreeMap;
 
 import whilelang.lang.Stmt;
 import whilelang.lang.WhileFile;
@@ -30,6 +32,10 @@ public class ClassFileWriter {
 	public 	static JvmType.Clazz JAVA_IO_PRINTSTREAM = new JvmType.Clazz("java.io", "PrintStream");
 	private static ArrayList<Modifier> modifiers = new ArrayList<Modifier>();
 	private static ArrayList<Bytecode> bytecodes = new ArrayList<Bytecode>();
+	
+	private static HashMap<String, WhileFile.Decl> declarations = new HashMap<String, WhileFile.Decl>();
+	private static HashMap<String, WhileFile.Decl> functions = new HashMap<String, WhileFile.Decl>();
+	
 	private static int slot = 0;
 	public ClassFileWriter(File classFile) throws FileNotFoundException {
 		 writer = new jasm.io.ClassFileWriter(new FileOutputStream(classFile));
@@ -48,17 +54,26 @@ public class ClassFileWriter {
 
 
 		// TODO: implement this method!! 
-		 for (Decl fd : sourceFile.declarations) {
-			if(fd instanceof WhileFile.FunDecl){
-				if (fd.name().equals("main")) {
-					WhileFile.FunDecl dec = (FunDecl) fd;
-					createMainMethod(cf, dec);
-				}
-				else{
-					createMethod(cf);
-				}
-			}
+		 for (WhileFile.Decl decl : sourceFile.declarations) {
+			 declarations.put(decl.name(), decl);
 		}
+		 
+		 WhileFile.Decl main = declarations.get("main");
+			if(main instanceof WhileFile.FunDecl) {
+				WhileFile.FunDecl fd = (WhileFile.FunDecl) main;
+				createMainMethod(cf, fd);
+			} else {
+				System.out.println("Cannot find a main() function");
+			}
+//			if(fd instanceof WhileFile.FunDecl){
+//			if (fd.name().equals("main")) {
+//				WhileFile.FunDecl dec = (FunDecl) fd;
+//				createMainMethod(cf, dec);
+//			}
+//			else{
+//				createMethod(cf);
+//			}
+//		}
 		 writer.write(cf);
 	}
 	
